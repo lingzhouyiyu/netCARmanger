@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>自定义窗体</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=139e66ee00b2edc5c7ad3fd640b60c07"></script>
+</head>
+<body>
+	<div class="ub second-box">
+		<div class="ub ub-f1 ub-ver third-main">
+			<div class="ub ub-ac header-main">
+				<div class="ub ub-ac put-left">
+					<span class="colred">* </span>头像
+				</div>
+				<div class="ub ub-ac ub-pc add-header colblue">
+					<label for="uploadImg">+</label>
+	<input id="uploadImg" type="file" name="files" accept="image/*" style="display: none" />
+				</div>
+				<div class="ub ub-ac ub-pc imgShow">
+					<img id="imgShow" src="" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- <div id="container"></div> -->
+<!-- <script type="text/javascript">
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("container", {resizeEnable: true});
+    var lnglats = [
+        [116.968904, 39.999923],
+        [116.382122, 39.921176],
+        [116.372122, 39.921176],
+        [116.968904, 39.900001],
+        [117.418258, 39.914600]
+    ];
+    
+    
+    var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+    for (var i = 0, marker; i < lnglats.length; i++) {
+        var marker = new AMap.Marker({
+            position: lnglats[i],
+            map: map
+        });
+        marker.content  = '<h4>我是第' + (i + 1) + '个XXX</h4>';
+        marker.content += '<h6>经度：'+lnglats[i][0]+'</h6>';
+        marker.content += '<h6>纬度：'+lnglats[i][1]+'</h6>';
+        marker.content += '<button class="btn btn-success btn-xs">历史轨迹</button>';
+        marker.content += '<button class="btn btn-warning btn-xs">实时跟踪 </button>';
+        marker.content += '<button class="btn btn-danger btn-xs">设置</button>';
+ 
+        marker.on('mouseover', infoOpen);
+        //注释后打开地图时默认关闭信息窗体
+        //marker.emit('mouseover', {target: marker});
+        marker.on('mouseout', infoClose);
+        marker.on('click', newMAp);
+    }  
+    map.setFitView();
+ 
+ 
+    
+    //鼠标点击事件,设置地图中心点及放大显示级别
+    function newMAp(e) {
+        //map.setCenter(e.target.getPosition());
+        map.setZoomAndCenter(12, e.target.getPosition());
+        
+        var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());    
+    }
+    
+    
+    function infoClose(e) {
+        infoWindow.close(map, e.target.getPosition());
+    }
+    function infoOpen(e) {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+    }
+</script> -->
+</body>
+</html

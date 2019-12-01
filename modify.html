@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<title>首页</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,   user-scalable=no">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css" />
+		<link type="image/x-icon" rel="shortcut icon" href="common/images/favicon.ico">
+		<link type="text/css" rel="stylesheet" href="common/fonts/font-awesome.min.css" />
+		<link type="text/css" rel="stylesheet" href="common/layui/css/layui.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="common/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="common/css/index.css" />
+	</head>
+
+	<body>
+		<!--left nav-->
+		<div class="wrap-leftnav">
+			<div class="leftnav-main">
+				<div class="logo">
+					<img src="common/images/logo.png" />
+				</div>
+				<ul class="mainnav">
+					<li class="mainnav-item">
+						<div class="mainnav-img">
+							<img src="common/images/leftnav-img.png" />
+						</div>
+						<a class="mainnav-a" href="index.html">下单管理</a>
+					</li>
+					<li class="mainnav-item">
+						<div class="mainnav-img">
+							<img src="common/images/leftnav-img.png" />
+						</div>
+						<a class="mainnav-a" href="orderlist.html">订单中心 </a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--right mainpage-->
+		<div class="wrap-mainpage">
+			<div class="mainpage">
+				<div class="pagetabs">
+					<div class="pagetabs-item curpagetabes">
+						<a class="pagetabs-a" href="#">下单管理</a>
+					</div>
+				</div>
+				<form class="layui-form" action="">
+					<div class="putitem">
+						<div class="layui-form-item dhide">
+							<label class="layui-form-label">下单秘钥</label>
+							<div class="layui-input-block">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入秘钥" class="layui-input Fkey">
+							</div>
+						</div>
+						<div class="layui-inline marb20">
+							<label class="layui-form-label">乘客姓名</label>
+							<div class="layui-input-inline">
+								<input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input Fname">
+							</div>
+						</div>
+						<div class="layui-inline marb20">
+							<label class="layui-form-label">手机号码</label>
+							<div class="layui-input-inline">
+								<input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input Fphone">
+							</div>
+						</div>
+						<div class="layui-inline marb20">
+							<label class="layui-form-label">订单金额</label>
+							<div class="layui-input-inline">
+								<input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input Fmoney">
+							</div>
+							<label class="">元</label>
+						</div>
+						<div class="layui-inline marb20 Fbag">
+							<label class="layui-form-label">行李</label>
+							<div class="layui-input-inline">
+								<select name="modules" lay-verify="required" lay-search="">
+									<option value="0">无行李</option>
+									<option value="1">小行李</option>
+									<option value="2">大行李</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline marb20 Fchild">
+							<label class="layui-form-label">携童</label>
+							<div class="layui-input-inline">
+								<select name="modules" lay-verify="required" lay-search="">
+									<option value="0">无儿童</option>
+									<option value="1">1儿童</option>
+									<option value="2">2儿童</option>
+									<option value="3">多儿童</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="putitem">
+						<div class="layui-form-item" style="width: 60%;display: inline-block;">
+							<label class="layui-form-label">起点</label>
+							<div class="layui-input-block" onclick="selectaddr(this)">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入起点" class="layui-input addrput Fbeginaddr"
+								 id="beginaddr">
+								<div class="dhide addrmap" id="beginmap"></div>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">出发时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="date" lay-verify="date" placeholder="出发时间" autocomplete="off" class="layui-input begintime Fbegintime"
+								 id="begintime">
+							</div>
+						</div>
+					</div>
+					<div class="putitem">
+						<div class="layui-form-item" style="width: 60%; float: left;">
+							<label class="layui-form-label">终点</label>
+							<div class="layui-input-block" onclick="selectaddr(this)">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入终点" class="layui-input addrput Fendaddr"
+								 id="endaddr">
+								<div class="dhide addrmap" id="endmap"></div>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">到达时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="date" lay-verify="date" placeholder="到达时间" autocomplete="off" class="layui-input endtime Fendtime"
+								 id="endtime">
+							</div>
+						</div>
+					</div>
+					<div style="clear: all;"></div>
+					<div class="putitem">
+						<div class="layui-form-item ">
+							<div class="layui-inline">
+								<div class="layui-input-block" style="display: inline-block;">
+									<input type="radio" name="sex" value="强制出发时间" title="强制出发时间">
+									<input type="radio" name="sex" value="强制到达时间" title="强制到达时间" checked="checked">
+
+								</div>
+							</div>
+							<div class="layui-inline">
+								<div class="layui-input-block" style="margin-left: 0;">
+									<input type="text" name="date" lay-verify="date" placeholder="强制时间" autocomplete="off" class="layui-input Flasttime"
+									 id="lasttime">
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="putitem">
+						<div class="layui-form-item">
+							<label class="layui-form-label">备注</label>
+							<div class="layui-input-block">
+								<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入备注" class="layui-input Fremark">
+							</div>
+						</div>
+					</div>
+					<div class="putitem">
+						<div class="saveorder">立即下单</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript" language="javascript" src="common/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="common/layui/layui.all.js"></script>
+<script type="text/javascript" language="javascript" src="common/js/common.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.14&key=cb46b91e0c80085a4c0e88839f40650f&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script>
+	$(function(){
+		loaddata();
+	})
+	//日期
+	layui.use('laydate', function() {
+		var laydate = layui.laydate;
+		laydate.render({
+			elem: '#begintime',
+			type: 'datetime'
+		});
+		laydate.render({
+			elem: '#endtime',
+			type: 'datetime'
+		});
+		laydate.render({
+			elem: '#lasttime',
+			type: 'datetime'
+		});
+	});
+	
+	//加载数据
+	var dbmarker = '';
+	var dbkey = '';
+	function loaddata(){
+		var modifydata = localStorage.getItem('modifydata');
+		var curdata = JSON.parse(modifydata);
+		console.log(curdata);
+		dbkey = curdata.FranchiseeOperationSecretKey;
+		dbmarker = curdata.FranchiseeOrderMark;
+		$('.Fname').val(curdata.PassengerName);
+		$('.Fphone').val(curdata.PassengerMobilPhone);
+		$('.Fmoney').val(curdata.Amount);
+		$('.Fbeginaddr').val(curdata.StartPointAddress);
+		$('.Fbeginaddr').attr('lat',curdata.StartPointCoordinate_Latitude);
+		$('.Fbeginaddr').attr('lng',curdata.StartPointCoordinate_Longitude);
+		$('.Fendaddr').val(curdata.EndPointAddress);
+		$('.Fendaddr').attr('lat',curdata.EndPointCoordinate_Latitude);
+		$('.Fendaddr').attr('lng',curdata.EndPointCoordinate_Longitude);
+		$('.Fbegintime').val(curdata.DepartureTime);
+		$('.Fendtime').val(curdata.ArriveTime);
+		$('.Flasttime').val(curdata.ForceDepartureTime);
+		$('.Fremark').val(curdata.Remarks);
+		//$('.Fbag').find('.layui-this').attr('lay-value');
+		//$('.Fchild').find('.layui-this').attr('lay-value');
+	}
+
+	//出发地输入提示
+	function selectaddr(dom) {
+		var mapid = $(dom).find('.addrmap').attr("id");
+		var addrid = $(dom).find('.addrput').attr("id");
+		//地图加载
+		var map = new AMap.Map(mapid, {
+			resizeEnable: true
+		});
+		//输入提示
+		var autoOptions = {
+			input: addrid,
+			city: ''
+		};
+		var auto = new AMap.Autocomplete(autoOptions);
+		var placeSearch = new AMap.PlaceSearch({
+			map: map
+		}); //构造地点查询类
+		AMap.event.addListener(auto, "select", select); //注册监听，当选中某条记录时会触发
+		function select(e) {
+			console.log(e);
+			placeSearch.setCity(e.poi.adcode);
+			placeSearch.search(e.poi.name); //关键字查询查询
+			var lat = e.poi.location.lat;
+			var lng = e.poi.location.lng;
+			$('#' + addrid).attr('lat', lat);
+			$('#' + addrid).attr('lng', lng);
+		}
+	}
+
+	//下单
+	function makeorder() {
+		//加盟商操作密钥 6e1fff40-2333-4820-a9d8-0e2ebdfb5689
+		// 加盟商查询密钥 2441fe91-61a0-4a54-8f52-09d3b543a14a
+		var furl = "/FranchiseeInteractive/EditPassengerOrder";
+		//var guid32 = getGuid32();
+		var Fkey = $('.Fkey').val();
+		var Fname = $('.Fname').val();
+		var Fphone = $('.Fphone').val();
+		var Fmoney = $('.Fmoney').val();
+		var Fbeginaddr = $('.Fbeginaddr').val();
+		var beginlat = $('.Fbeginaddr').attr('lat');
+		var beginlng = $('.Fbeginaddr').attr('lng');
+		var Fendaddr = $('.Fendaddr').val();
+		var endlat = $('.Fendaddr').attr('lat');
+		var endlng = $('.Fendaddr').attr('lng');
+		var Fbegintime = $('.Fbegintime').val();
+		var Fendtime = $('.Fendtime').val();
+		var Flasttime = $('.Flasttime').val();
+		var Fremark = $('.Fremark').val();
+		var Fbag = $('.Fbag').find('.layui-this').attr('lay-value');
+		var Fchild = $('.Fchild').find('.layui-this').attr('lay-value');
+		var sex = "0";
+		// if(Fkey == null || Fkey == ''){
+		// 	 layer.msg('请输入秘钥');
+		// 	 return;
+		// }
+		if(Fname == null || Fname == ''){
+			 layer.msg('请输入姓名');
+			 return;
+		}
+		if(Fphone == null || Fphone == ''){
+			 layer.msg('请输入电话');
+			 return;
+		}
+		if(Fmoney == null || Fmoney == ''){
+			 layer.msg('请输入金额');
+			 return;
+		}
+		if(Fbeginaddr == null || Fbeginaddr == ''){
+			 layer.msg('请输入起点');
+			 return;
+		}
+		if(Fendaddr == null || Fendaddr == ''){
+			 layer.msg('请输入终点');
+			 return;
+		}
+		if(Fbegintime == null || Fbegintime == ''){
+			 layer.msg('请输入出发时间');
+			 return;
+		}
+		if(Fendtime == null || Fendtime == ''){
+			 layer.msg('请输入到达时间');
+			 return;
+		}
+		if(Flasttime == null || Flasttime == ''){
+			 layer.msg('请输入强制时间');
+			 return;
+		}
+		var queryJson = {
+			FranchiseeOperationSecretKey: dbkey,
+			FranchiseeOrderMark: dbmarker,
+			Amount: Fmoney,
+			Remarks: Fremark,
+			PassengerName: Fname,
+			PassengerSex: "0",
+			PassengerMobilPhone: Fphone,
+			LuggageState: Fbag,
+			ChildrenState: Fchild,
+			StartPointAddress: Fbeginaddr,
+			StartPointCoordinate_Latitude: beginlat,
+			StartPointCoordinate_Longitude: beginlng,
+			EndPointAddress: Fendaddr,
+			EndPointCoordinate_Latitude: endlat,
+			EndPointCoordinate_Longitude: endlng,
+			DepartureTime: Fbegintime,
+			ArriveTime: Fendtime,
+			ForceDepartureTime: Flasttime,
+			ForceArriveTime: Flasttime,
+		}
+		console.log(queryJson);
+		$.ajax({
+			url: Serverurl + furl,
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: {orderJson: JSON.stringify(queryJson)},
+			success: function(result) {
+				if(result.ResuleType == 0){
+					layer.alert('下单成功', {
+						icon: 1,
+						title: "系统提示"
+					});
+				}else{
+					layer.alert(result.Message, {
+						icon: 5,
+						title: "系统提示"
+					});
+				}
+			}
+		});
+
+	}
+	$('.saveorder').on('click', function() {
+		makeorder();
+	})
+</script>

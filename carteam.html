@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<title>车队管理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,   user-scalable=no">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link type="image/x-icon" rel="shortcut icon" href="common/images/favicon.ico">
+		<link type="text/css" rel="stylesheet" href="common/fonts/font-awesome.min.css" />
+		<link type="text/css" rel="stylesheet" href="common/layui/css/layui.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="common/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="common/css/company.css" />
+	</head>
+
+	<body>
+		<!--left nav-->
+		<div class="wrap-leftnav">
+			<div class="leftnav-main">
+				<div class="logo">
+					<img src="common/images/logo.png" />
+				</div>
+				<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="width: 180px;">
+					<li class="layui-nav-item">
+						<a href="javascript:;">运营管理</a>
+						<dl class="layui-nav-child">
+							<dd><a href="dispatch.html">地图派单</a></dd>
+							<dd><a href="looklocation.html">乘客位置管理</a></dd>
+							<dd><a href="porders.html">客运订单列表</a></dd>
+							<dd><a href="javascript:;">货运订单列表</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;">财务报表</a>
+						<dl class="layui-nav-child">
+							<dd><a href="">加盟商公司结算总汇</a></dd>
+							<dd><a href="">加盟商车队结算总汇</a></dd>
+							<dd><a href="">加盟商车辆结算总汇</a></dd>
+							<dd><a href="">城际公司业务数据统计</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:;">基础数据</a>
+						<dl class="layui-nav-child">
+							<dd><a href="company.html">加盟商管理</a></dd>
+							<dd><a href="memberteam.html">运输公司管理</a></dd>
+							<dd class="layui-this"><a href="carteam.html">运输车队管理</a></dd>
+							<dd><a href="cars.html">运输车辆管理</a></dd>
+							<dd><a href="">用户管理</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--right mainpage-->
+		<div class="wrap-mainpage">
+			<div class="mainpage">
+				<div class="pagetabs">
+					<div class="pagetabs-item curpagetabes">
+						<a class="pagetabs-a" href="#">车队管理</a>
+					</div>
+				</div>
+				<div class="addbtnbox">
+					 <a href="addcarteam.html"><button type="button" class="layui-btn layui-btn-normal">新增车队</button></a>
+				</div>
+				<!--乘客表格列表-->
+				<table class="layui-hide" id="passenger" lay-filter="passenger"></table>
+				<script type="text/html" id="barDemo">
+					<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+					<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+				</script>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript" language="javascript" src="common/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="common/layui/layui.all.js"></script>
+<script type="text/javascript" language="javascript" src="common/js/common.js"></script>
+<script>
+	$(function() {
+		loadtable();
+	});
+
+	//加载乘客列表
+	function loadtable() {
+		layui.use('table', function() {
+			var table = layui.table;
+			table.render({
+				elem: '#passenger',
+				cols: [
+					[ //标题栏
+						{
+							field: 'Name',
+							title: '车队名称',
+						}, {
+							field: 'type',
+							title: '所属公司',
+						}, {
+							field: 'addr',
+							title: '车辆类型',
+						}, {
+							field: 'phone',
+							title: '管理员',
+						},
+						{
+							fixed: 'right',
+							title: '操作',
+							toolbar: '#barDemo',
+						}
+					]
+				],
+				data: [{
+						"Name": "来云游",
+						"type": "公司",
+						"addr": "昆明高新招商大厦",
+						"phone": "18788888888",
+					}, {
+						"Name": "来云游",
+						"type": "公司",
+						"addr": "昆明高新招商大厦",
+						"phone": "18788888888",
+					},{
+						"Name": "来云游",
+						"type": "公司",
+						"addr": "昆明高新招商大厦",
+						"phone": "18788888888",
+					},{
+						"Name": "来云游",
+						"type": "公司",
+						"addr": "昆明高新招商大厦",
+						"phone": "18788888888",
+					}]
+					//,skin: 'line' //表格风格
+					,
+				even: true
+					,page: true //是否显示分页
+					// ,limits: [5, 7, 10]
+					,
+				limit: 30, //每页默认显示的数量
+				height: "full-130"
+			});
+			//监听工具条
+			//监听工具条
+			table.on('tool(passenger)', function(obj) {
+				var data = obj.data;
+				if (obj.event === 'detail') {
+					layer.msg('ID：' + data.id + ' 的查看操作');
+				} else if (obj.event === 'del') {
+					layer.confirm('真的删除行么', function(index) {
+						obj.del();
+						layer.close(index);
+					});
+				} else if (obj.event === 'edit') {
+					var modifydata = JSON.stringify(data);
+					localStorage.setItem("modifydata", modifydata);
+					window.location.href = "carteamedit.html"; 
+				}
+			});
+		});
+
+	}
+</script>

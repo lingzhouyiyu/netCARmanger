@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+/**====== style login ======**/
+.wrap_logintop{ width: 100%; background: #fff; overflow: hidden; height: auto;}
+.login_topleft{ float: left; overflow: hidden; padding: 20px 0;}
+.login_logo{ float: left; padding-right: 55px; border-right: 1px solid #E1E1E1; margin-right: 20px;}
+.login_logo img{ width: 120px;}
+.login_lefttitle{ float: left; font-size: 24px; line-height: 57px;}
+.login_goindex{ float: right; font-size: 16px; height: 40px; width: 120px; line-height: 40px; border: 1px solid #ccc; border-radius: 40px; color: #969696; text-align: center; margin-top: 20px;}
+.wrap_loginmain{ height: 760px; background: url(../images/login_bg.jpg) no-repeat center center; overflow: hidden; background-size: cover;  }
+.position_relt{ height: 100%; overflow: hidden; position: relative; }
+.login_main{ position:  absolute; left: 50%; top: 50%; width: 710px; height: 400px; background: rgba(255,255,255,0.92); margin-left: -355px; margin-top: -200px;}
+.login_tiele{ text-align: center; font-size: 18px; padding-top: 50px; padding-bottom: 60px;}
+.login_mainbox{ overflow: hidden;}
+.login_item{  overflow: hidden; margin-bottom: 25px;}
+.login_itemleft{ float: left; width:180px; text-align: right; overflow: hidden; line-height: 40px; font-size: 15px; margin-right: 25px;}
+.login_itemright{ float: left; border: 1px solid #DCDCDC; width: 350px; height: 40px; font-size: 15px; background: #fff; }
+.login_putxtx{ float: left;  width: 338px; height: 40px; padding: 0 5px;line-height: 40px; }
+.login_putxtx02{float: left;  width: 218px; height: 40px; padding: 0 5px;line-height: 40px; }
+.checkcodebox{ float: right; cursor: pointer; height: 40px; overflow: hidden;}
+.login_btnbox{ padding-left: 205px; padding-top: 15px; padding-bottom: 25px;}
+.login_btn{ height: 40px; width: 352px; font-size: 15px; text-align: center; color: #fff; cursor: pointer; background: #185d96; line-height: 42px;}
+.login_btn:hover{ background: #347ab4;}
+.quickbox{ text-align: center; padding-left: 15px; font-size: 14px; color: #666;}
+.quick_login{ display: inline-block; color: #969696;}
+.quick_line{ margin: 0 20px; color: #969696;}
+.find_pwd{ color: #969696;}
+.login_bottom{ text-align: center; font-size: 16px; padding-top: 50px;}
+.login_footer{ padding: 20px 0; }
+.login_footer p{color: #828181;text-align: center; }
+
+

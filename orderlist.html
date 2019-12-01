@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<title>订单中心</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,   user-scalable=no">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link type="image/x-icon" rel="shortcut icon" href="common/images/favicon.ico">
+		<link type="text/css" rel="stylesheet" href="common/fonts/font-awesome.min.css" />
+		<link type="text/css" rel="stylesheet" href="common/layui/css/layui.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="common/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="common/css/index.css" />
+	</head>
+
+	<body>
+		<!--left nav-->
+		<div class="wrap-leftnav">
+			<div class="leftnav-main">
+				<div class="logo">
+					<img src="common/images/logo.png" />
+				</div>
+				<ul class="mainnav">
+					<li class="mainnav-item">
+						<div class="mainnav-img">
+							<img src="common/images/leftnav-img.png" />
+						</div>
+						<a class="mainnav-a" href="index.html">下单管理</a>
+					</li>
+					<li class="mainnav-item">
+						<div class="mainnav-img">
+							<img src="common/images/leftnav-img.png" />
+						</div>
+						<a class="mainnav-a" href="orderlist.html">订单中心 </a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--right mainpage-->
+		<div class="wrap-mainpage">
+			<div class="mainpage">
+				<div class="pagetabs">
+					<div class="pagetabs-item curpagetabes">
+						<a class="pagetabs-a" href="#">订单中心</a>
+					</div>
+				</div>
+				<div class="table-topbar">
+					<div class="demoTable">
+						<div class="layui-inline" style="margin-right: 30px;">
+							开始时间：
+							<div class="layui-inline">
+								<input type="text" name="date" lay-verify="date" placeholder="开始时间" autocomplete="off" class="layui-input begintime Fbegintime"
+								 id="begintime">
+							</div>
+						</div>
+						<div class="layui-inline">
+							结束时间：
+							<div class="layui-inline">
+								<input type="text" name="date" lay-verify="date" placeholder="结束时间" autocomplete="off" class="layui-input endtime Fendtime"
+								 id="endtime">
+							</div>
+						</div>
+						<button class="layui-btn" style="background-color:#098dd6" data-type="reload">搜索</button>
+					</div>
+				</div>
+				<div class="">
+					<table class="layui-hide" lay-filter="ordertable" id="ordertable">
+
+					</table>
+					<script type="text/html" id="barDemo">
+						<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">退单</a>
+					</script>
+					<script type="text/html" id="statusTpl">
+						  {{#  if(d.OrderState === 0){ }}
+						  	<span style="color: #5D5D5D;">平台已接单</span>
+						    {{#  }
+						     else if(d.OrderState === -1) { }}
+						    		<span style="color: #5D5D5D;">人工派单</span>
+						    	{{#  }
+						     else if(d.OrderState === 2) { }}
+						  	<span style="color: #5D5D5D;">已派单</span>
+						  	{{#  }
+						  	 else if(d.OrderState === 3) { }}
+						  		<span style="color: #5D5D5D;">司机已接单</span>
+						  	{{#  }
+						  	else if(d.OrderState === 4) { }}
+						  		<span style="color: #FF0000;">司机已退单</span>
+						  	{{#  }
+						  	else if(d.OrderState === 5 || d.OrderState === 6) { }}
+						  		<span style="color: #5D5D5D;">乘客已上车</span>
+						  	{{#  }
+						  	else if(d.OrderState === 7) { }}
+						  		<span style="color: #ff8330;">超时未上车</span>
+						  	{{#  }
+						  	else if(d.OrderState === 8) { }}
+						  		<span style="color: #5D5D5D;">任务已完成</span>
+						  	{{#  }
+						  	else if(d.OrderState === 9) { }}
+						  		<span style="color: #5D5D5D;">商家已退单</span>
+						  	{{#  }
+						  	else if(d.OrderState === 10) { }}
+						  		<span style="color: #FF0000;">任务错误</span>
+						    {{#  } }}
+					</script>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript" language="javascript" src="common/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="common/layui/layui.all.js"></script>
+<script type="text/javascript" language="javascript" src="common/js/common.js"></script>
+<script>
+	$(function() {
+
+	});
+	
+	//日期
+	layui.use('laydate', function() {
+		var laydate = layui.laydate;
+		laydate.render({
+			elem: '#begintime',
+		});
+		laydate.render({
+			elem: '#endtime',
+		});
+	});
+
+	layui.use('table', function() {
+		var dbkey = localStorage.getItem('dbkey');
+		var dbmark = localStorage.getItem('dbmark');
+		var table = layui.table;
+		var furl = "/FranchiseeInteractive/SelectPassengerOrderPageList";
+		table.render({
+			elem: '#ordertable',
+			url: Serverurl + furl,
+			where: {
+				franchiseeQuerySecretKey: dbmark,
+				startTime: '',
+				endTime: '',
+			},
+			method: 'GET',
+			cols:[[{field:'OrderState',title:'状态',width:100, templet: '#statusTpl'},{field:'PassengerName',title:'乘客姓名',width:100},{field:'PassengerMobilPhone',title:'乘客电话',width:140},{field:'Amount',title:'金额',width:80},{field:'DepartureTime',title:'出发时间',},{field:'ArriveTime',title:'到达时间'},{field:'StartPointAddress',title:'上车地址'},{field:'EndPointAddress',title:'下车地址'},{field:'ChildrenState',title:'携童',width:60},{field:'CreateTime',title:'下单时间'},,{field:'right',title:'操作',toolbar:'#barDemo',width:150}]]
+				//,skin: 'line' //表格风格
+				,
+			even: true,
+			page: true,
+			limits: [10,20,50,100],
+			limit: 30 ,
+			height: "full-130",
+			id: 'testReload',
+			request: {
+				pageName: 'page',
+				limitName: 'rows' //每页数据量的参数名，默认：limit
+			},
+			response: {
+				statusName: 'ResuleType' //规定数据状态的字段名称，默认：code
+					,
+				statusCode: 0 //规定成功的状态码，默认：0
+					,
+				msgName: 'Message' //规定状态信息的字段名称，默认：msg
+					,
+				countName: 'Total' //规定数据总数的字段名称，默认：count
+					,
+				dataName: 'PassengerOrder' //规定数据列表的字段名称，默认：data
+			}
+		});
+		//监听工具条
+		table.on('tool(ordertable)', function(obj) {
+			var data = obj.data;
+			if (obj.event === 'detail') {
+				layer.msg('ID：' + data.id + ' 的查看操作');
+			} else if (obj.event === 'del') {
+				layer.confirm('真的删除行么', function(index) {
+					var cuekey = data.FranchiseeOperationSecretKey;
+					var curmark =  data.FranchiseeOrderMark;
+					dodelete(cuekey,curmark);
+					obj.del();
+					layer.close(index);
+				});
+			} else if (obj.event === 'edit') {
+				var modifydata = JSON.stringify(data);
+				localStorage.setItem("modifydata", modifydata);
+				window.location.href = "modify.html"; 
+				//layer.alert('编辑行：<br>' + JSON.stringify(data))
+			}
+		});
+
+		var $ = layui.$,
+			active = {
+				reload: function() {
+					var Fbegintime = $('.Fbegintime').val();
+					var Fendtime = $('.Fendtime').val();
+					//执行重载
+					table.reload('testReload', {
+						page: {
+							curr: 1 //重新从第 1 页开始
+						},
+						where: {
+							startTime: Fbegintime,
+							endTime: Fendtime,
+						}
+					}, 'data');
+				}
+			};
+
+		$('.demoTable .layui-btn').on('click', function() {
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
+	});
+	
+	//删除表格
+	function dodelete(cuekey,curmark){
+		var furl = "/FranchiseeInteractive/DeletePassengerOrder";
+		var queryJson = {
+			franchiseeOperationSecretKey:cuekey,
+			franchiseeOrderMark:curmark
+		}
+		$.ajax({
+			url: Serverurl + furl,
+			type: "POST",
+			async: false,
+			dataType: "json",
+			data: queryJson,
+			success: function(result) {
+				if(result.ResuleType == 0){
+					layer.alert('删除成功', {
+						icon: 1,
+						title: "系统提示"
+					});
+				}else{
+					layer.alert(result.Message, {
+						icon: 5,
+						title: "系统提示"
+					});
+				}
+			}
+		});
+	}
+	//编辑
+	function domodify(dom) {
+		// window.location.href = "modify.html"; 
+	}
+</script>

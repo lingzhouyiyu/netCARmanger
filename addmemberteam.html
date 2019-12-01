@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<title>运输公司管理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,   user-scalable=no">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link type="image/x-icon" rel="shortcut icon" href="common/images/favicon.ico">
+		<link type="text/css" rel="stylesheet" href="common/fonts/font-awesome.min.css" />
+		<link type="text/css" rel="stylesheet" href="common/layui/css/layui.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="common/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="common/css/company.css" />
+	</head>
+
+	<body>
+		<!--left nav-->
+		<div class="wrap-leftnav">
+			<div class="leftnav-main">
+				<div class="logo">
+					<img src="common/images/logo.png" />
+				</div>
+				<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="width: 180px;">
+					<li class="layui-nav-item">
+						<a href="javascript:;">运营管理</a>
+						<dl class="layui-nav-child">
+							<dd><a href="javascript:;">地图派单</a></dd>
+							<dd><a href="looklocation.html">乘客位置管理</a></dd>
+							<dd><a href="porders.html">客运订单列表</a></dd>
+							<dd><a href="javascript:;">货运订单列表</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;">财务报表</a>
+						<dl class="layui-nav-child">
+							<dd><a href="">加盟商公司结算总汇</a></dd>
+							<dd><a href="">加盟商车队结算总汇</a></dd>
+							<dd><a href="">加盟商车辆结算总汇</a></dd>
+							<dd><a href="">城际公司业务数据统计</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:;">基础数据</a>
+						<dl class="layui-nav-child">
+							<dd><a href="company.html">加盟商管理</a></dd>
+							<dd class="layui-this"><a href="memberteam.html">运输公司管理</a></dd>
+							<dd><a href="carteam.html">运输车队管理</a></dd>
+							<dd><a href="cars.html">运输车辆管理</a></dd>
+							<dd><a href="">用户管理</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--right mainpage-->
+		<div class="wrap-mainpage">
+			<div class="mainpage">
+				<div class="pagetabs">
+					<div class="pagetabs-item curpagetabes">
+						<a class="pagetabs-a" href="#">新增运输公司</a>
+					</div>
+				</div>
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">公司名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="名称" class="layui-input Fname">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">公司描述</label>
+						<div class="layui-input-block">
+							<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="描述" class="layui-input Fname">
+						</div>
+					</div>
+					<!-- <div class="layui-form-item">
+						<label class="layui-form-label">所属公司</label>
+						<div class="layui-input-block">
+							<select name="interest" lay-filter="aihao">
+								<option value=""></option>
+								<option value="0">写作</option>
+								<option value="1" selected="">阅读</option>
+								<option value="2">游戏</option>
+								<option value="3">音乐</option>
+								<option value="4">旅行</option>
+							</select>
+						</div>
+					</div> -->
+					<div class="layui-form-item">
+						<label class="layui-form-label">管理员</label>
+						<div class="layui-input-block">
+							<input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="管理员" class="layui-input Fname">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn" lay-submit="" lay-filter="demo1">确认添加</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript" language="javascript" src="common/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="common/layui/layui.all.js"></script>
+<script type="text/javascript" language="javascript" src="common/js/common.js"></script>
+<script>
+	$(function() {
+
+	});
+
+	layui.use(['form', 'laydate'], function() {
+		var form = layui.form,
+			layer = layui.layer,
+			laydate = layui.laydate;
+
+		//日期
+		laydate.render({
+			elem: '#starttime',
+			type: 'datetime'
+		});
+		laydate.render({
+			elem: '#endtime',
+			type: 'datetime'
+		});
+	});
+</script>

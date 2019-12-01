@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+		<title>乘客位置管理</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,   user-scalable=no">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+		<link type="image/x-icon" rel="shortcut icon" href="common/images/favicon.ico">
+		<link type="text/css" rel="stylesheet" href="common/fonts/font-awesome.min.css" />
+		<link type="text/css" rel="stylesheet" href="common/layui/css/layui.css" media="all" />
+		<link type="text/css" rel="stylesheet" href="common/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="common/css/dispatch.css" />
+
+	</head>
+
+	<body>
+		<!--left nav-->
+		<div class="wrap-leftnav">
+			<div class="leftnav-main">
+				<div class="logo">
+					<img src="common/images/logo.png" />
+				</div>
+				<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="width: 180px;">
+					<li class="layui-nav-item layui-nav-itemed">
+						<a href="javascript:;">乘客位置管理</a>
+						<dl class="layui-nav-child">
+							<dd class="layui-this"><a href="dispatch.html">地图派单</a></dd>
+							<dd><a href="looklocation.html">乘客位置管理</a></dd>
+							<dd><a href="porders.html">客运订单列表</a></dd>
+							<dd><a href="javascript:;">货运订单列表</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;">财务报表</a>
+						<dl class="layui-nav-child">
+							<dd><a href="">加盟商公司结算总汇</a></dd>
+							<dd><a href="">加盟商车队结算总汇</a></dd>
+							<dd><a href="">加盟商车辆结算总汇</a></dd>
+							<dd><a href="">城际公司业务数据统计</a></dd>
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="javascript:;">基础数据</a>
+						<dl class="layui-nav-child">
+							<dd><a href="company.html">加盟商管理</a></dd>
+							<dd><a href="memberteam.html">运输公司管理</a></dd>
+							<dd><a href="carteam.html">运输车队管理</a></dd>
+							<dd><a href="cars.html">运输车辆管理</a></dd>
+							<dd><a href="">用户管理</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--right mainpage-->
+		<div class="wrap-mainpage">
+			<div class="mainpage">
+				<div class="pagetabs">
+					<div class="pagetabs-item curpagetabes">
+						<a class="pagetabs-a" href="#">地图派单</a>
+					</div>
+				</div>
+				<div class="layui-form" style="padding-bottom: 20px;">
+					<div class="putitem demoTable">
+						<div class="layui-inline" style="margin-right: 30px;">
+							开始时间：
+							<div class="layui-inline">
+								<input type="text" name="date" lay-verify="date" placeholder="选择时间" autocomplete="off" class="layui-input begintime Fbegintime"
+								 id="begintime">
+							</div>
+						</div>
+						<div class="layui-inline">
+							结束时间：
+							<div class="layui-inline">
+								<input type="text" name="date" lay-verify="date" placeholder="结束时间" autocomplete="off" class="layui-input endtime Fendtime"
+								 id="endtime">
+							</div>
+						</div>
+						<!-- <div class="layui-inline" style="margin-right: 30px;">
+							<label class="layui-form-label" style="font-size: 14px;">城市</label>
+							<div class="layui-input-inline">
+								<select name="modules" lay-verify="required" lay-search="">
+									<option value="昆明">昆明</option>
+									<option value="昭通">昭通</option>
+									<option value="大关">大关</option>
+									<option value="镇雄">镇雄</option>
+								</select>
+							</div>
+						</div> -->
+						<div class="layui-inline" style="margin-right: 30px;">
+							<label class="layui-form-label" style="font-size: 14px; width: 100px;">接送类型</label>
+							<div class="layui-input-inline Ftype">
+								<select name="modules" lay-verify="required" lay-search="">
+									<option value="1">城内接驳_接</option>
+									<option value="2">城内接驳_送</option>
+									<option value="3">同城配送</option>
+								</select>
+							</div>
+						</div>
+						<!-- <div class="layui-inline">
+							乘客姓名：
+							<div class="layui-inline">
+								<input class="layui-input" name="id" id="demoReload" autocomplete="off">
+							</div>
+						</div> -->
+						<button class="layui-btn" style="background-color:#098dd6" data-type="reload">查询</button>
+					</div>
+				</div>
+				<div class="mapbox" id="container">
+
+				</div>
+				<!--乘客表格列表-->
+				<div class="passenger-table">
+					<table class="layui-hide" id="passenger" lay-filter="passenger"></table>
+					<script type="text/html" id="barDemo">
+						{{#  if(d.OrderState === 0 || d.OrderState === 4){ }}
+							 <a class="layui-btn layui-btn-xs" lay-event="edit">派单</a>
+						{{#  } else { }}
+							 <a class="layui-btn layui-btn-xs" style="background: #999;">派单</a>
+						  {{#  } }}
+					</script>
+					<script type="text/html" id="statusTpl">
+						{{#  if(d.OrderState === 0){ }}
+							<span style="color: #5D5D5D;">平台已接单</span>
+						  {{#  }
+							else if(d.OrderState === -1) { }}
+								<span style="color: #5D5D5D;">人工派单</span>
+								{{#  }
+						   else if(d.OrderState === 2) { }}
+							<span style="color: #5D5D5D;">平台已派单</span>
+							{{#  }
+							 else if(d.OrderState === 3) { }}
+								<span style="color: #5D5D5D;">司机已接单</span>
+							{{#  }
+							else if(d.OrderState === 4) { }}
+								<span style="color: #FF0000;">司机已退单</span>
+							{{#  }
+							else if(d.OrderState === 5 || d.OrderState === 6) { }}
+								<span style="color: #5D5D5D;">乘客已上车</span>
+							{{#  }
+							else if(d.OrderState === 7) { }}
+								<span style="color: #ff8330;">超时未上车</span>
+							{{#  }
+							else if(d.OrderState === 8) { }}
+								<span style="color: #5D5D5D;">任务已完成</span>
+							{{#  }
+							else if(d.OrderState === 9) { }}
+								<span style="color: #5D5D5D;">商家已退单</span>
+							{{#  }
+							else if(d.OrderState === 10) { }}
+								<span style="color: #FF0000;">任务错误</span>
+						  {{#  } }}
+					</script>
+				</div>
+				<!-- 需要弹出的添加员工界面 -->
+				<div class="layui-row layui-layer layui-layer-page" style="display: none;" data-type="auto" id="test">
+					<div class="layui-layer-content" style="height:500px;">
+						<div class="layui-col-md10">
+							<form class="layui-form" action="">
+								<div class="layui-form-item carslistbox" style="margin-top: 25px;">
+									<label class="layui-form-label" style="width: 100px;">选择车辆：</label>
+									<div class="layui-input-block">
+										<div class="layui-input-block">
+											<select name="modules" name="category" lay-filter="category" class="carslist">
+												<option value='请选择'>请选择</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="layui-form-item">
+									<div class="layui-input-block" style="overflow: hidden;">
+										<div class="layui-layer-btn layui-layer-btn-">
+											<a class="layui-layer-btn1">取消</a>
+											<a class="layui-layer-btn0">确认</a>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript" language="javascript" src="common/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="common/layui/layui.all.js"></script>
+<script type="text/javascript" language="javascript" src="common/js/gcoord.js"></script>
+<script type="text/javascript" language="javascript" src="common/js/common.js"></script>
+<script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=cb46b91e0c80085a4c0e88839f40650f&plugin=AMap.Driving"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script>
+	$(function() {
+		setmapH();
+		getkey();
+		loadtable();
+		getdriver();
+		getcarPosition();
+
+	});
+	//日期
+	var form;
+	layui.use(['form', 'laydate'], function() {
+		form = layui.form;
+		var layer = layui.layer;
+		var laydate = layui.laydate;
+		laydate.render({
+			elem: '#begintime',
+			type: 'datetime'
+		});
+		laydate.render({
+			elem: '#endtime',
+			type: 'datetime'
+		});
+
+
+	});
+
+	//获取加盟商住建
+	var keyvalue = [];
+
+	function getkey() {
+		var furl = '/Schedule/GetCurrentUserFranchiseeList';
+		$.ajax({
+			url: Serverurl + furl,
+			type: "GET",
+			async: false,
+			dataType: "json",
+			success: function(result) {
+				if (result.ResuleType == 0) {
+					keyvalue.push(result.Datas[0]);
+				}
+			}
+
+		});
+	}
+
+	//获取司机当前位置
+	var carpoints = [];
+	var driverName = [];
+	var passenger = [];
+
+	function getcarPosition() {
+		var furl = '/Schedule/GetDevicePosition';
+		$.ajax({
+			url: Serverurl + furl,
+			type: "GET",
+			async: false,
+			dataType: "json",
+			success: function(result) {
+				var datas = result.Datas;
+				length = datas.length;
+				if (length > 0) {
+					for (var i = 0; i < length; i++) {
+						var pointLat = datas[i].CurrentLatitude;
+						var pointLng = datas[i].CurrentLongitude;
+						var pointLatLng = [pointLng, pointLat];
+						pointLatLng = gcoord.transform(pointLatLng, // 经纬度坐标
+							gcoord.WGS84, // 当前坐标系
+							gcoord.GCJ02 // 目标坐标系
+						);
+						passenger = [];
+						var name = datas[i].DriverName;
+						carpoints = [pointLatLng];
+						driverName = [name];
+						// carpoints.push(pointLatLng);
+						// driverName.push(name);
+						var pasdata = datas[i].PassengerMissionsBriefInformation;
+						addplayer(pasdata);
+						drivermarker();
+					}
+					// console.log(carpoints);
+
+				}
+			}
+
+		});
+	}
+
+	function addplayer(data) {
+		for (var i = 0; i < data.length; i++) {
+			passenger.push(data[i].MainInformation);
+		}
+
+	}
+
+
+	//计算地图高度
+	function setmapH() {
+		var mainH = $(window).height();
+		var mapboxH = mainH - 125;
+		$('.mapbox').css('height', mapboxH)
+	}
+
+	//加载地图
+	var marker;
+	var lineArr = [];
+	var contents = [];
+	var endarry = [];
+	var endcontents = [];
+	var map = new AMap.Map("container", {
+		resizeEnable: true,
+		zoom: 13
+	});
+
+	function loadmap() {
+		//console.log(typeof(lineArr));
+		// marker = new AMap.Marker({
+		// 	map: map,
+		// 	position: [102.71, 25.03],
+		// 	icon: "https://webapi.amap.com/images/car.png",
+		// 	offset: new AMap.Pixel(-26, -13),
+		// 	autoRotation: true,
+		// 	angle: -90,
+		// });
+		// 绘制轨迹
+		// 		var polyline = new AMap.Polyline({
+		// 			map: map,
+		// 			path: lineArr,
+		// 			showDir: true,
+		// 			strokeColor: "#009cf9", //线颜色
+		// 			strokeOpacity: 1, //线透明度
+		// 			strokeWeight: 6, //线宽
+		// 			strokeStyle: "solid" //线样式
+		// 		});
+		// 
+		// 		var passedPolyline = new AMap.Polyline({
+		// 			map: map,
+		// 			path: lineArr,
+		// 			strokeColor: "#009cf9", //线颜色
+		// 			strokeOpacity: 1, //线透明度
+		// 			strokeWeight: 6, //线宽
+		// 			strokeStyle: "solid" //线样式
+		// 		});
+
+
+		// marker.on('moving', function(e) {
+		// 	passedPolyline.setPath(e.passedPath);
+		// });
+
+	}
+	//设置乘客起点多点标记
+	var markers = [];
+
+	function setmarker() {
+		console.log(lineArr);
+		for (var i = 0; i < lineArr.length; i++) {
+			var pmarker = new AMap.Marker({
+				position: lineArr[i],
+				icon: 'common/images/startmarker.png',
+				map: map
+			});
+
+			pmarker.setLabel({
+				offset: new AMap.Pixel(10, -20), //设置文本标注偏移量
+				content: "<span class='amap-marker-label01'>" + contents[i].name + ',' + contents[i].starttime + "</span>", //设置文本标注内容
+				direction: 'left' //设置文本标注方位
+			});
+			markers.push(pmarker);
+		}
+	}
+	// 设置乘客终点多点标记
+	var endmarkers = [];
+
+	function setendmarker() {
+		console.log(endarry);
+		for (var i = 0; i < endarry.length; i++) {
+			var pmarker = new AMap.Marker({
+				position: endarry[i],
+				icon: 'common/images/endmarker.png',
+				map: map
+			});
+
+			pmarker.setLabel({
+				offset: new AMap.Pixel(10, -20), //设置文本标注偏移量
+				content: "<span class='amap-marker-label02'>" + endcontents[i].name + ',' + endcontents[i].endtime + "</span>", //设置文本标注内容
+				direction: 'left' //设置文本标注方位
+			});
+			endmarkers.push(pmarker);
+		}
+	}
+	//检查显示乘客坐标
+	function checkstation() {
+		var Ftype = $('.Ftype').find('.layui-this').attr('lay-value');
+		if (Ftype == '1') {
+			setmarker();
+		}
+		if (Ftype == '2') {
+			setendmarker();
+		}
+	}
+	//设置单个乘客单点标记
+	var signmarkers = [];
+	var signarry = [];
+	var signcount = [];
+
+	function setsignmarker() {
+		for (var i = 0; i < signarry.length; i++) {
+			var pmarker = new AMap.Marker({
+				position: signarry[i],
+				icon: 'common/images/signmarker.png',
+				map: map
+			});
+
+			pmarker.setLabel({
+				offset: new AMap.Pixel(10, -20), //设置文本标注偏移量
+				content: "<span class='amap-marker-label03'>" + signcount[i].name + ',' + signcount[i].time + "</span>", //设置文本标注内容
+				direction: 'left' //设置文本标注方位
+			});
+			signmarkers.push(pmarker);
+		}
+	}
+	//设置司机多点标记
+	var infoWindow = new AMap.InfoWindow({
+		offset: new AMap.Pixel(0, -30)
+	});
+
+	function drivermarker() {
+		for (var i = 0; i < carpoints.length; i++) {
+			var cmarker = new AMap.Marker({
+				position: carpoints[i],
+				icon: 'https://webapi.amap.com/images/car.png',
+				map: map
+			});
+
+			cmarker.setLabel({
+				offset: new AMap.Pixel(10, -20), //设置文本标注偏移量
+				content: driverName[i], //设置文本标注内容
+				direction: 'left' //设置文本标注方位
+			});
+			cmarker.content = "<h3 style='margin-bottom:10px'>司机：" + driverName[i] + '</h3>';
+			if (passenger.length <= 0) {
+				cmarker.content += "<h6 style='color:#FF0000'>暂无乘客</h6>";
+			}
+			for (var j = 0; j < passenger.length; j++) {
+
+				cmarker.content += '<h6>' + '乘客 ' + (j + 1) + '：' + passenger[j] + '</h6>';
+			}
+
+			cmarker.on('mouseover', infoOpen);
+			//注释后打开地图时默认关闭信息窗体
+			//marker.emit('mouseover', {target: marker});
+			cmarker.on('mouseout', infoClose);
+			cmarker.on('click', newMAp);
+		}
+		map.setFitView();
+	}
+	//鼠标点击事件,设置地图中心点及放大显示级别
+	function newMAp(e) {
+		//map.setCenter(e.target.getPosition());
+		map.setZoomAndCenter(12, e.target.getPosition());
+
+		var infoWindow = new AMap.InfoWindow({
+			offset: new AMap.Pixel(0, -30)
+		});
+		infoWindow.setContent(e.target.content);
+		infoWindow.open(map, e.target.getPosition());
+	}
+
+	function infoClose(e) {
+		infoWindow.close(map, e.target.getPosition());
+	}
+
+	function infoOpen(e) {
+		infoWindow.setContent(e.target.content);
+		infoWindow.open(map, e.target.getPosition());
+	}
+
+	//加载乘客列表
+	function loadtable() {
+		layui.use('table', function() {
+			var $ = layui.$;
+			// var frontOneHour = new Date(new Date().getTime() + 2 * 60 * 60 * 1000);
+			var queryArriveTime = new Date(+new Date().getTime() + 4 * 60 * 60 * 1000 + 8 * 3600 * 1000).toISOString().replace(
+				/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+			// console.log(queryArriveTime);
+			var queryDepartureTime = new Date(+new Date().getTime() - 30 * 60 * 1000 + 8 * 3600 * 1000).toISOString().replace(
+				/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+				var Fbegintime = $('.Fbegintime').val();
+				var Fendtime = $('.Fendtime').val();
+			var Ftype = $('.Ftype').find('.layui-this').attr('lay-value');
+			var sentype = [Ftype];
+			var furl = '/Schedule/GetPassengerTransportOrderPageList';
+			var pagination = {
+				Size: 20,
+				Page: 1,
+				Sidx: 'DepartureTime',
+				Sord: 'true'
+			}
+			var queryJson = {
+				franchiseeIds: keyvalue,
+				orderStates: [0, 4, 7, 10],
+				queryDepartureTime: Fbegintime,
+				queryArriveTime: Fendtime,
+				businessType: sentype
+			}
+			var postdata = JSON.stringify(queryJson);
+			var table = layui.table;
+			table.render({
+				elem: '#passenger',
+				url: Serverurl + furl,
+				where: {
+					json: postdata,
+					Size: 30,
+					page: 1,
+					Sidx: 'CreateTime',
+					Sord: 'true'
+				},
+				method: 'GET',
+				cols: [
+					[ //标题栏
+						{
+							title: '状态',
+							width: 100,
+							templet: '#statusTpl'
+						}, {
+							field: 'PassengerName',
+							title: '乘客姓名',
+							event: 'lookMark',
+							width: 100
+						}, {
+							field: 'DepartureTime',
+							title: '出发时间',
+							width: 180
+						},
+						{
+							fixed: 'right',
+							title: '操作',
+							toolbar: '#barDemo',
+							width: 80
+						}
+					]
+				],
+				even: true,
+				page: true,
+				limits: [30],
+				limit: 30,
+				id: 'testReload',
+				// height: "full-130",
+				request: {
+					pageName: 'Page',
+					limitName: 'Size' //每页数据量的参数名，默认：limit
+				},
+				response: {
+					statusName: 'ResuleType' //规定数据状态的字段名称，默认：code
+						,
+					statusCode: 0 //规定成功的状态码，默认：0
+						,
+					msgName: 'Message' //规定状态信息的字段名称，默认：msg
+						,
+					countName: 'Total' //规定数据总数的字段名称，默认：count
+						,
+					dataName: 'Datas' //规定数据列表的字段名称，默认：data
+				},
+				done: function(res) {
+					var resdata = res.Datas;
+					var length = resdata.length;
+					lineArr = [];
+					contents = [];
+
+					if (length > 0) {
+						for (var i = 0; i < length; i++) {
+							var obj = {};
+							var endobj = {};
+							var pointLat = resdata[i].StartPointCoordinate_Latitude;
+							var pointLng = resdata[i].StartPointCoordinate_Longitude;
+							var pointLatLng = [pointLng, pointLat];
+							var endLat = resdata[i].EndPointCoordinate_Latitude;
+							var endLng = resdata[i].EndPointCoordinate_Longitude;
+							var endLatLng = [endLng, endLat];
+							var name = resdata[i].PassengerName;
+							var starttime = resdata[i].DepartureTime;
+							var smtime = dotime(starttime);
+							var endtime = resdata[i].ArriveTime;
+							var sendtime = dotime(endtime);
+							obj.starttime = smtime;
+							obj.name = name;
+							endobj.endtime = sendtime;
+							endobj.name = name;
+							lineArr.push(pointLatLng);
+							contents.push(obj);
+							endarry.push(endLatLng);
+							endcontents.push(endobj);
+						}
+						console.log(contents);
+						loadmap();
+						checkstation();
+						// setmarker();
+						// setendmarker();
+					}
+
+					//marker
+				}
+			});
+			//监听工具条
+			table.on('tool(passenger)', function(obj) {
+				var data = obj.data;
+				var orderarry = [];
+				orderarry.push(data.Id);
+				if (obj.event === 'edit') {
+					//layer.alert('编辑行：<br>' + JSON.stringify(data));
+					layer.open({
+						type: 1,
+						title: "派车",
+						area: ["500px"],
+						content: $("#test").html(),
+						yes: function() {
+							layer.closeAll();
+						},
+						btn2: function() {
+							dispatch(orderarry);
+						}
+					});
+
+					/* 渲染表单 */
+					form.render();
+
+				}
+
+				if (obj.event === 'lookMark') {
+					//console.log(obj.data);
+					signarry = [];
+					signcount = [];
+					var signobj = [];
+					map.remove(signmarkers);
+					var Ftype = $('.Ftype').find('.layui-this').attr('lay-value');
+					var pointLat = obj.data.StartPointCoordinate_Latitude;
+					var pointLng = obj.data.StartPointCoordinate_Longitude;
+					var pointLatLng = [pointLng, pointLat];
+					var endLat = obj.data.EndPointCoordinate_Latitude;
+					var endLng = obj.data.EndPointCoordinate_Longitude;
+					var endLatLng = [endLng, endLat];
+					var name = obj.data.PassengerName;
+					var starttime = obj.data.DepartureTime;
+					var smtime = dotime(starttime);
+					var endtime = obj.data.ArriveTime;
+					var sendtime = dotime(endtime);
+
+					if (Ftype == '1') {
+						signarry.push(pointLatLng);
+						signobj.name = name;
+						signobj.time = smtime;
+						signcount.push(signobj);
+					}
+					if (Ftype == '2') {
+						signarry.push(endLatLng);
+						signobj.name = name;
+						signobj.time = sendtime;
+						signcount.push(signobj);
+					}
+					setsignmarker();
+					map.setFitView();
+				}
+			});
+
+
+			var $ = layui.$,
+				active = {
+					reload: function() {
+						var curtime = new Date(+new Date().getTime() + 8 * 3600 * 1000).toISOString().replace(
+							/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+						var Fbegintime = $('.Fbegintime').val();
+						var Fendtime = $('.Fendtime').val();
+						var Ftype = $('.Ftype').find('.layui-this').attr('lay-value');
+						var sentype = [Ftype];
+						if (Ftype == 0) {
+							sentype = [1, 2, 3];
+						}
+						if (Fbegintime == null || Fbegintime == '') {
+							Fbegintime == curtime;
+						}
+						var queryJson = {
+							franchiseeIds: keyvalue,
+							orderStates: [0, -1, 1, 2, 3, 4],
+							queryDepartureTime: Fbegintime,
+							queryArriveTime: Fendtime,
+							businessType: sentype
+						}
+						var postdata = JSON.stringify(queryJson);
+						//执行重载
+						table.reload('testReload', {
+							page: {
+								curr: 1 //重新从第 1 页开始
+							},
+							where: {
+								json: postdata,
+							}
+						}, 'data');
+						map.remove(markers);
+						map.remove(endmarkers);
+						lineArr = [];
+						contents = [];
+						endarry = [];
+						signarry = [];
+						signcount = [];
+						endcontents = [];
+						loadmap();
+						checkstation();
+						// setmarker();
+					}
+				};
+
+			$('.demoTable .layui-btn').on('click', function() {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+
+		});
+	}
+	//时间处理
+	function dotime(curtime) {
+		var myDate = new Date(curtime);
+		var hous = myDate.getHours();
+		var minute = myDate.getMinutes();
+		if (hous < 10) {
+			hous = "0" + hous;
+		}
+		if (minute < 10) {
+			minute = "0" + minute;
+		}
+		var lastTime = hous + ":" + minute;
+		return lastTime;
+	}
+	//获取驾驶员
+	function getdriver() {
+		var furl = '/Schedule/GetCurrentUserAdminTransportDriver';
+		$.ajax({
+			url: Serverurl + furl,
+			type: "GET",
+			async: false,
+			dataType: "json",
+			success: function(result) {
+				if (result.ResuleType == 0) {
+					var data = result.Datas;
+					for (var i = 0; i < data.length; i++) {
+						var optiondom = "<option value='" + data[i].Id + "'>" + data[i].DriverName + "</option>";
+						$('.carslist').append(optiondom);
+					}
+					form.render();
+				}
+			}
+
+		});
+	}
+	var driverid = '';
+	console.log($('.carslistbox').find('.layui-this').attr('lay-value'));
+	form.on('select(category)', function(data) {
+		driverid = data.value;
+		form.render('select');
+		// console.log(driverid);
+	});
+	//派单
+	function dispatch(orderarry) {
+		var furl = '/Schedule/CreateManualMission';
+		// var driverid = $('.carslistbox').find('.layui-this').attr('lay-value');
+		// console.log(driverid);
+		var queryJson = {
+			transportDriverId: driverid,
+			passengerTransportOrderIds: orderarry,
+			freightTransportOrderIds: []
+		}
+		var postdata = JSON.stringify(queryJson);
+		console.log(postdata);
+		$.ajax({
+			url: Serverurl + furl,
+			type: "GET",
+			async: false,
+			dataType: "json",
+			data: {
+				json: postdata
+			},
+			success: function(result) {
+				layer.msg(result.Message);
+			}
+		});
+	}
+</script>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>加盟商登录</title>
+		<meta name="viewport" content="width=1200, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes">
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link type="image/x-icon" rel="shortcut icon" href="common/images/favicon.ico">
+		<link type="text/css" rel="stylesheet" href="common/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="common/css/common.css" />
+		<link rel="stylesheet" href="common/css/login.css" />
+	</head>
+
+	<body class="login_body">
+		<!--header start-->
+		<div class="wrap_logintop">
+			<div class="clearFix">
+				<div class="login_topleft">
+					<a class="login_logo" href="index.html">
+						<img src="common/images/logo-blue.png" />
+					</a>
+					<h2 class="login_lefttitle">
+						加盟商登录
+					</h2>
+				</div>
+				<a href="index.html" class="login_goindex dhide">返回首页</a>
+			</div>
+		</div>
+		<!--header end-->
+		<div class="wrap_loginmain">
+			<div class="clearFix position_relt">
+				<div class="login_main">
+					<div class="login_tiele">
+						加盟商登录
+					</div>
+					<div class="login_mainbox">
+						<div class="login_item">
+							<div class="login_itemleft">
+								下单秘钥
+							</div>
+							<div class=" login_itemright">
+								<input class="login_putxtx Fdbkey" type="text" placeholder="请输入正确的下单秘钥" />
+							</div>
+						</div>
+						<div class="login_item">
+							<div class="login_itemleft">
+								查询秘钥
+							</div>
+							<div class=" login_itemright">
+								<input class="login_putxtx Fdbmark" type="text" placeholder="请输入正确的查询秘钥" />
+							</div>
+						</div>
+					</div>
+					<div class="login_btnbox">
+						<div class="login_btn">立即登录</div>
+					</div>
+					<div class="quickbox sc-text dhide">
+						<a class="quick_login" href="javascript:void(0)">QQ登录快捷登录</a>
+						<span class="quick_line">|</span>
+						<a class="find_pwd" href="findpwd.html">忘记密码？</a>
+					</div>
+					<div class="login_bottom dhide">
+						<span class="sc-text">还没有ACIR账号？</span>
+						<a class="colred" href="register.html">立即注册</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<div class="login_footer">
+			<div class="clearFix">
+				<p class="login_server">服务热线：020-85289921</p>
+				<p class="login_copy">来云游 版权所有</p>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="common/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" language="javascript" src="common/layui/layui.all.js"></script>
+<script src="common/js/common.js"></script>
+<script>
+	
+	function checklogo(){
+		var Fdbkey = $('.Fdbkey').val();
+		var Fdbmark = $('.Fdbmark').val();
+		if((Fdbkey == '' || Fdbkey == null) && (Fdbmark == '' || Fdbmark == null) ){
+			layer.msg('请输入秘钥');
+			return;
+		}else{
+			checkkey();
+		}
+	}
+	function checkkey(){
+		var SecretKey = null;
+		var Fdbkey = $('.Fdbkey').val();
+		var Fdbmark = $('.Fdbmark').val();
+		if(Fdbkey != '' && Fdbkey != null){
+			SecretKey = Fdbkey;
+		}else{
+			SecretKey = Fdbmark;
+		}
+		var furl = '/FranchiseeInteractive/SelactFranchisee?SecretKey=' + SecretKey;
+		$.ajax({
+			url: Serverurl + furl,
+			type: "POST",
+			async: false,
+			dataType: "json",
+		
+			success: function(result) {
+				if(result.State == '有效'){
+					localStorage.setItem("dbkey", Fdbkey);
+					localStorage.setItem("dbmark", Fdbmark);
+					window.location.href = "index.html"; 
+				}else{
+					layer.alert('无效的秘钥', {
+						icon: 5,
+						title: "系统提示"
+					});
+				}
+			}
+		});
+	}
+	
+	$('.login_btn').on('click',function(){
+		checklogo();
+	})
+</script>

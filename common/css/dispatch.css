@@ -1,0 +1,61 @@
+.layui-nav-tree .layui-nav-bar{ background: #098dd6;}
+.layui-nav-tree .layui-nav-child dd.layui-this, .layui-nav-tree .layui-nav-child dd.layui-this a, .layui-nav-tree .layui-this, .layui-nav-tree .layui-this>a, .layui-nav-tree .layui-this>a:hover{background: #098dd6; }
+.putitem .layui-input,.putitem .layui-select,.putitem .layui-textarea{ height: 38px !important;} */
+.layui-btn{background: #098dd6;}
+.layui-btn-danger {
+    background-color: #FF5722;
+}
+.height38{ height: 38px;}
+.passenger-table{ position: fixed; right: 20px; top: 110px; height: auto; max-height: 90%; background: #fff; overflow: auto;}
+.layui-table-box{ background: #fff;}
+.amap-marker-label{
+	 position: absolute;
+      z-index: 2;
+      border: 1px solid #ccc;
+      background-color: white;
+      white-space: nowrap;
+      cursor: default;
+      padding: 3px;
+      font-size: 12px;
+      line-height: 14px;
+}
+.amap-marker-label01{
+      position: absolute;
+      z-index: 2;
+      border: 1px solid #3D6EFF;
+      background-color: white;
+      white-space: nowrap;
+      cursor: default;
+      padding: 3px;
+      font-size: 12px;
+      line-height: 14px;
+	  left: -10px;
+	  top: -10px;
+   }
+   .amap-marker-label02{
+         position: absolute;
+         z-index: 2;
+         border: 1px solid #ff254e;
+         background-color: white;
+         white-space: nowrap;
+         cursor: default;
+         padding: 3px;
+         font-size: 12px;
+         line-height: 14px;
+   	  left: -10px;
+   	  top: -10px;
+      }
+	   .amap-marker-label03{
+	        position: absolute;
+	        z-index: 2;
+	        border: 1px solid #6927ff;
+	        background-color: #6927ff;
+	        white-space: nowrap;
+	        cursor: default;
+	        padding: 3px;
+	        font-size: 12px;
+	        line-height: 14px;
+			color: #fff;
+	  	  left: -10px;
+	  	  top: -10px;
+	     }
